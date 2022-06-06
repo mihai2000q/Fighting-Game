@@ -6,5 +6,5 @@ public class Constants {
     public static final float WORLD_WIDTH = 1600;
     public static final float WORLD_HEIGHT = 900;
 
-    public static final String MapPath = "Maps/forest-tileset-lite/Map.tmx";
+    public static final String MapPath = "Maps/forest_tileset_lite/Map.tmx";
 }
