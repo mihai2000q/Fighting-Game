@@ -41,7 +41,7 @@ public class Screen extends ScreenAdapter {
         orthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / PPM);
         orthogonalTiledMapRenderer.setView(camera);
         world = new World(new Vector2(0, GRAVITY), true);
-        Builder.buildMap(world, tiledMap);
+        Builder.buildMapObjects(world, tiledMap);
         //for debugging purposes
         debugRenderer = new Box2DDebugRenderer();
     }
