@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="400" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="5">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="400" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="6">
  <tileset firstgid="1" source="TSX_files/mountain2.tsx"/>
  <tileset firstgid="302" source="TSX_files/pine1.tsx"/>
  <tileset firstgid="689" source="TSX_files/pine2.tsx"/>
@@ -41,6 +41,9 @@
    eJzt1bENACEQA0HSix9C+m/zazgnIDQjOXe2YwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwP1m9bbq9GMAbrCrv25zpuYAPCfpR7JPQwCeoh8AJPQDgIR+AJDQDwASP1i2GLo=
   </data>
  </layer>
+ <objectgroup id="8" name="PlayerSpawn">
+  <object id="5" name="Player" x="57" y="284"/>
+ </objectgroup>
  <objectgroup id="7" name="Ground">
   <object id="1" x="-3.5" y="368.667" width="210.5" height="112.167"/>
   <object id="4" x="205.417" y="385.25" width="210.833" height="95.5003"/>
