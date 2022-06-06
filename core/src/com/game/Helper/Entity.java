@@ -6,8 +6,9 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.MassData;
 import com.badlogic.gdx.physics.box2d.World;
+import com.game.Helper.Interfaces.iEntity;
 
-public abstract class Entity extends Sprite {
+public abstract class Entity extends Sprite implements iEntity {
 
     protected final World world;
     protected final Vector2 spawnPoint;
