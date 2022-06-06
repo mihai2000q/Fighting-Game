@@ -13,7 +13,7 @@ public abstract class Entity extends Sprite {
     protected Vector2 spawnPoint;
     protected MassData massData;
     protected Body body;
-    private BodyDef bodyDef;
+    protected BodyDef bodyDef;
 
     public Entity(World world, float X, float Y) {
         this.world = world;
