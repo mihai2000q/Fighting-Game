@@ -1,4 +1,4 @@
-package com.game;
+package com.game.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -15,10 +15,11 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.game.Entities.Interfaces.iPlayer;
 
-import static com.game.Constants.*;
+import static com.game.Helper.Constants.*;
 
-public class Screen extends ScreenAdapter {
+public class GameMap extends ScreenAdapter {
 
     private SpriteBatch spriteBatch;
     private World world;
@@ -27,13 +28,17 @@ public class Screen extends ScreenAdapter {
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
     private Viewport viewport;
     private Box2DDebugRenderer debugRenderer;
+    private iPlayer player;
 
     private float viewportSize = 2.5f;
 
-    @Override
-    public void show() {
+    public GameMap() {
         spriteBatch = new SpriteBatch();
         camera = new OrthographicCamera();
+        debugRenderer = new Box2DDebugRenderer();
+    }
+    @Override
+    public void show() {
         viewport = new FitViewport(WORLD_WIDTH / PPM / viewportSize,
                                     WORLD_HEIGHT / PPM / viewportSize, camera);
         viewport.apply(true);
@@ -42,13 +47,13 @@ public class Screen extends ScreenAdapter {
         orthogonalTiledMapRenderer.setView(camera);
         world = new World(new Vector2(0, GRAVITY), true);
         Builder.buildMapObjects(world, tiledMap);
-        //for debugging purposes
-        debugRenderer = new Box2DDebugRenderer();
+        player = Builder.spawnPlayer(world, tiledMap);
     }
     @Override
     public void render(float delta) {
         clearScreen();
         update(delta);
+        draw();
         orthogonalTiledMapRenderer.render();
         debugRenderer.render(world, new Matrix4(camera.combined));
     }
@@ -62,14 +67,22 @@ public class Screen extends ScreenAdapter {
     }
     @Override
     public void dispose() {
+        world.dispose();
         spriteBatch.dispose();
         tiledMap.dispose();
         orthogonalTiledMapRenderer.dispose();
     }
-    private void update(float delta) {
-        cameraUpdate();
+    public void draw() {
+        spriteBatch.begin();
+        player.draw(spriteBatch);
+        spriteBatch.end();
     }
-    private void cameraUpdate() {
+    private void update(float delta) {
+        world.step(1 / 60f, 6, 2);
+        cameraUpdate(delta);
+        player.update(delta);
+    }
+    private void cameraUpdate(float delta) {
         orthogonalTiledMapRenderer.setView(camera);
         spriteBatch.setProjectionMatrix(camera.projection);
         spriteBatch.setTransformMatrix(camera.view);
