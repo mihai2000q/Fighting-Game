@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.game.Entities.Interfaces.iPlayer;
+import com.game.Managers.CameraManager;
 
 import static com.game.Helper.Constants.*;
 
@@ -29,6 +31,7 @@ public class GameMap extends ScreenAdapter {
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
     private iPlayer player;
+    private TiledMapTileLayer layer;
 
     private float viewportSize = 2.5f;
 
@@ -48,6 +51,7 @@ public class GameMap extends ScreenAdapter {
         orthogonalTiledMapRenderer.setView(camera);
         Builder.buildMapObjects(world, tiledMap);
         player = Builder.spawnPlayer(world, tiledMap);
+        layer = (TiledMapTileLayer) tiledMap.getLayers().get("Background");
     }
     @Override
     public void render(float delta) {
@@ -86,6 +90,9 @@ public class GameMap extends ScreenAdapter {
         orthogonalTiledMapRenderer.setView(camera);
         spriteBatch.setProjectionMatrix(camera.projection);
         spriteBatch.setTransformMatrix(camera.view);
+        CameraManager.worldFullWidth = (layer.getWidth() * layer.getTileWidth() / PPM);
+        CameraManager.worldFullHeight = (layer.getHeight() * layer.getTileHeight() / PPM);
+        CameraManager.lockOnPlayer(camera, player, delta);
     }
     private void clearScreen() {
         Gdx.gl.glClearColor(Color.BLACK.r, Color.BLACK.g,

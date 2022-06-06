@@ -16,6 +16,8 @@ import static com.game.Helper.Constants.*;
 
 public class Player extends Entity implements iPlayer {
 
+    public enum State{DEAD, RUNNING, IDLE, JUMPING}
+
     private final float X_SPEED = 2.5f;
     private final float JUMP_SPEED = 6f;
     private TextureRegion textureRegion;
@@ -50,8 +52,8 @@ public class Player extends Entity implements iPlayer {
         handleInput(delta);
     }
     @Override
-    public void getState() {
-
+    public State getState() {
+        return null;
     }
     @Override
     public void restartPosition() {
