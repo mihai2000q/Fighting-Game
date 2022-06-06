@@ -2,6 +2,7 @@ package com.game.Map;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -28,6 +29,8 @@ public class Builder {
             Shape shape;
             if (object instanceof RectangleMapObject)
                 shape = buildRectangle((RectangleMapObject) object);
+            else if (object instanceof PolylineMapObject)
+                shape = buildPolyLine((PolylineMapObject) object);
             else
                 continue;
             BodyDef bodyDef = new BodyDef();
@@ -56,6 +59,19 @@ public class Builder {
         polygonShape.setAsBox(rectangle.width * 0.5f / PPM,
                                 rectangle.height * 0.5f / PPM, size,0f);
         return polygonShape;
+    }
+    private static ChainShape buildPolyLine(PolylineMapObject polylineMapObject) {
+        float[] vertices = polylineMapObject.getPolyline().getTransformedVertices();
+        Vector2[] worldVertices = new Vector2[vertices.length / 2];
+
+        for(int i = 0; i < vertices.length / 2; ++i) {
+            worldVertices[i] = new Vector2();
+            worldVertices[i].x = vertices[i * 2] / PPM;
+            worldVertices[i].y = vertices[i * 2 + 1] / PPM;
+        }
+        ChainShape chainShape = new ChainShape();
+        chainShape.createChain(worldVertices);
+        return chainShape;
     }
     public static iPlayer spawnPlayer(World world, TiledMap tiledMap) {
         MapObjects objects = tiledMap.getLayers().get("PlayerSpawn").getObjects();

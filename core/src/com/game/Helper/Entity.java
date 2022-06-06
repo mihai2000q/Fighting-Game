@@ -6,22 +6,23 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.MassData;
 import com.badlogic.gdx.physics.box2d.World;
+import com.game.Helper.Interfaces.iEntity;
 
-public abstract class Entity extends Sprite {
+public abstract class Entity extends Sprite implements iEntity {
 
-    protected World world;
-    protected Vector2 spawnPoint;
-    protected MassData massData;
+    protected final World world;
+    protected final Vector2 spawnPoint;
+    protected final MassData massData;
+    protected final BodyDef bodyDef;
     protected Body body;
-    protected BodyDef bodyDef;
 
     public Entity(World world, float X, float Y) {
         this.world = world;
+        bodyDef = new BodyDef();
         spawnPoint = new Vector2(X / Constants.PPM, Y / Constants.PPM);
         massData = new MassData();
     }
     protected void defineBody(BodyDef.BodyType bodyType) {
-        bodyDef = new BodyDef();
         bodyDef.type = bodyType;
         bodyDef.position.set(spawnPoint);
         bodyDef.fixedRotation = true;
@@ -36,7 +37,4 @@ public abstract class Entity extends Sprite {
         return body.getPosition().y;
     }
     protected abstract void defineFixture();
-    public Body getBody(){
-        return body;
-    }
 }
