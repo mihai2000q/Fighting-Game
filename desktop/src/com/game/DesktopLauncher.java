@@ -9,8 +9,8 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
 		config.setResizable(false);
-		config.setTitle("Naruto-game");
+		config.setTitle("Fighting-Game");
 		config.setWindowedMode(1600,900);
-		new Lwjgl3Application(new NarutoG(), config);
+		new Lwjgl3Application(new FightingGame(), config);
 	}
 }
