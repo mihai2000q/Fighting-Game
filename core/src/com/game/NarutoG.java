@@ -5,13 +5,10 @@ import com.game.Map.GameMap;
 
 public class NarutoG extends Game {
 
-	private final GameMap gameMap;
-
-	public NarutoG(){
-		gameMap = new GameMap();
-	}
+	private GameMap gameMap;
 	@Override
 	public void create() {
+		gameMap = new GameMap();
 		setScreen(gameMap);
 	}
 	@Override
