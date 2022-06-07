@@ -3,7 +3,7 @@ package com.game;
 import com.badlogic.gdx.Game;
 import com.game.Map.GameMap;
 
-public class NarutoG extends Game {
+public final class FightingGame extends Game {
 
 	private GameMap gameMap;
 	@Override

@@ -15,7 +15,8 @@ import com.game.Entities.Player;
 
 import static com.game.Helper.Constants.PPM;
 
-public class Builder {
+public final class Builder {
+    private Builder() {}
     public static void buildMapObjects(World world, TiledMap tiledMap) {
         for (int i = 0; i < tiledMap.getLayers().getCount(); i++)
             if(!(tiledMap.getLayers().get(i) instanceof TiledMapTileLayer))

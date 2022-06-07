@@ -21,7 +21,7 @@ import com.game.Managers.CameraManager;
 
 import static com.game.Helper.Constants.*;
 
-public class GameMap extends ScreenAdapter {
+public final class GameMap extends ScreenAdapter {
 
     private final SpriteBatch spriteBatch;
     private final World world;
@@ -33,7 +33,7 @@ public class GameMap extends ScreenAdapter {
     private iPlayer player;
     private TiledMapTileLayer layer;
 
-    private float viewportSize = 2.5f;
+    private float viewportSize = 3.5f;
 
     public GameMap() {
         spriteBatch = new SpriteBatch();
@@ -57,8 +57,8 @@ public class GameMap extends ScreenAdapter {
     public void render(float delta) {
         clearScreen();
         update(delta);
-        draw();
         orthogonalTiledMapRenderer.render();
+        draw();
         debugRenderer.render(world, new Matrix4(camera.combined));
     }
     @Override

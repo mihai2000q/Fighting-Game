@@ -7,7 +7,7 @@ import com.game.Entities.Player;
 
 import static com.game.Helper.Constants.PPM;
 
-public class CameraManager {
+public final class CameraManager {
 
     private static Vector3 cameraPosition = new Vector3();
     private static final Vector3 target = new Vector3();
@@ -18,6 +18,7 @@ public class CameraManager {
     public static float worldFullWidth;
     public static float worldFullHeight;
 
+    private CameraManager() {}
     public static void lockOnPlayer(Camera camera, iPlayer player, float delta) {
         float speedY = delta * 5f;
 
@@ -26,11 +27,11 @@ public class CameraManager {
 
         cameraPosition = camera.position;
         target.x = player.getX();
-        target.y = player.getY() + 35 / PPM;
+        target.y = player.getY();
         target.z = camera.position.z;
 
         if(player.getState() == Player.State.JUMPING)
-            speedY = delta;
+            speedY = delta * 2f;
 
         if(isPlayerOutsideXLeft())
             target.x = screenHalfWidth;
