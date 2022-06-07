@@ -7,7 +7,7 @@ import com.game.Entities.Player;
 
 import static com.game.Helper.Constants.PPM;
 
-public class CameraManager {
+public final class CameraManager {
 
     private static Vector3 cameraPosition = new Vector3();
     private static final Vector3 target = new Vector3();
@@ -18,6 +18,7 @@ public class CameraManager {
     public static float worldFullWidth;
     public static float worldFullHeight;
 
+    private CameraManager() {}
     public static void lockOnPlayer(Camera camera, iPlayer player, float delta) {
         float speedY = delta * 5f;
 

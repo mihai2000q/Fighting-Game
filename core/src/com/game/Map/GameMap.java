@@ -21,7 +21,7 @@ import com.game.Managers.CameraManager;
 
 import static com.game.Helper.Constants.*;
 
-public class GameMap extends ScreenAdapter {
+public final class GameMap extends ScreenAdapter {
 
     private final SpriteBatch spriteBatch;
     private final World world;
