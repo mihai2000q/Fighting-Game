@@ -3,6 +3,9 @@ package com.game.Entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -13,20 +16,32 @@ import com.game.Entities.Interfaces.iPlayer;
 import com.game.Helper.Entity;
 
 import static com.game.Helper.Constants.*;
+import static com.game.Managers.AnimationManager.*;
 
 public class Player extends Entity implements iPlayer {
 
-    public enum State{DEAD, RUNNING, IDLE, JUMPING}
+    public enum State{IDLE, RUNNING, JUMPING, FALLING, DEAD}
+    private State currentState;
+    private State previousState;
 
     private final float X_SPEED = 2.5f;
     private final float JUMP_SPEED = 6f;
-    private TextureRegion textureRegion;
+    private final Animation<TextureRegion> idle;
+    private final Animation<TextureRegion> running;
+    private float stateTimer = 0f;
+    private boolean runningRight = false;
 
     public Player(World world, float X, float Y) {
         super(world, X, Y);
         defineBody(BodyDef.BodyType.DynamicBody);
-        this.setBounds(spawnPoint.x, spawnPoint.y, 257 / PPM / 100, 259 / PPM / 100);
-        textureRegion = new TextureRegion(new Texture(PlayerPath), 64, 64);
+        currentState = State.IDLE;
+        previousState = State.IDLE;
+
+        //setRegion(atlas.findRegion("something"));
+        idle = createAnimationFrame(PlayerPath + "idle.png", 7, 64,64);
+        running = createAnimationFrame(PlayerPath + "running.png", 6, 64,64);
+
+        this.setBounds(spawnPoint.x, spawnPoint.y, 64 / PPM, 64 / PPM);
     }
     @Override
     protected void defineFixture() {
@@ -48,16 +63,29 @@ public class Player extends Entity implements iPlayer {
     @Override
     public void update(float delta) {
         this.setCenter(getX(),getY());
-        this.setRegion(textureRegion);
+        this.setRegion(getFrame(delta));
         handleInput(delta);
     }
     @Override
     public State getState() {
-        return null;
+        if((body.getLinearVelocity().y > 0
+                || (body.getLinearVelocity().y < 0
+                && previousState == State.JUMPING)))
+            return State.JUMPING;
+        else if(body.getLinearVelocity().y < 0)
+            return State.FALLING;
+        else if(body.getLinearVelocity().x != 0)
+            return State.RUNNING;
+        else
+            return State.IDLE;
     }
     @Override
     public void restartPosition() {
-
+        body.setTransform(spawnPoint.x, spawnPoint.y + 100f / PPM, 0);
+    }
+    @Override
+    public void draw(Batch batch) {
+        super.draw(batch);
     }
     @Override
     public void setDead() {
@@ -76,7 +104,36 @@ public class Player extends Entity implements iPlayer {
 
         if(input.isKeyJustPressed(Input.Keys.UP) ||
             input.isKeyJustPressed(Input.Keys.W) ||
-            input.isKeyJustPressed(Input.Keys.SPACE))
+            input.isKeyJustPressed(Input.Keys.SPACE)
+            && currentState != State.JUMPING && currentState != State.FALLING)
             body.applyLinearImpulse(new Vector2(0, ySpeed), body.getWorldCenter(), true);
+    }
+    private TextureRegion getFrame(float delta) {
+        currentState = getState();
+
+        TextureRegion region;
+        switch (currentState) {
+            case RUNNING:
+                region = running.getKeyFrame(stateTimer,true);
+                break;
+            case JUMPING:
+            case FALLING:
+            case DEAD:
+            case IDLE:
+            default:
+                region = idle.getKeyFrame(stateTimer, true);
+        }
+
+        if((body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()) {
+            region.flip(true,false);
+            runningRight = false;
+        }
+        else if((body.getLinearVelocity().x > 0 || runningRight) && region.isFlipX()) {
+            region.flip(false,true);
+            runningRight = true;
+        }
+        stateTimer = currentState == previousState ? stateTimer + delta : 0;
+        previousState = currentState;
+        return region;
     }
 }
