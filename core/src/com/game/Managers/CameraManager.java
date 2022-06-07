@@ -27,11 +27,11 @@ public final class CameraManager {
 
         cameraPosition = camera.position;
         target.x = player.getX();
-        target.y = player.getY() + 35 / PPM;
+        target.y = player.getY();
         target.z = camera.position.z;
 
         if(player.getState() == Player.State.JUMPING)
-            speedY = delta;
+            speedY = delta * 2f;
 
         if(isPlayerOutsideXLeft())
             target.x = screenHalfWidth;

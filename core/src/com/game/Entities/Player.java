@@ -27,7 +27,7 @@ public final class Player extends Entity implements iPlayer {
     private State previousState;
 
     private final float X_SPEED = 2.5f;
-    private final float JUMP_SPEED = 5f;
+    private final float JUMP_SPEED = 9f;
     private final Animation<TextureRegion> idle;
     private final Animation<TextureRegion> running;
     private final Animation<TextureRegion> jumping;
@@ -38,9 +38,11 @@ public final class Player extends Entity implements iPlayer {
     private final Animation<TextureRegion> attackingC;
     private final Animation<TextureRegion> attackingD;
     private final Animation<TextureRegion> attackingKick;
+    private final Animation<TextureRegion> attackingJump;
     private float stateTimer = 0f;
     private boolean runningRight = false;
     private boolean isAttack = false;
+    private boolean isDead = false;
     private float attackTimer = 0f;
 
     public Player(World world, float X, float Y) {
@@ -61,6 +63,7 @@ public final class Player extends Entity implements iPlayer {
         attackingC = createAnimationFrame(PlayerPath + "Attacks/attack-C", 7, 128,96);
         attackingD = createAnimationFrame(PlayerPath + "Attacks/attack-D", 9, 128,96);
         attackingKick = createAnimationFrame(PlayerPath + "Attacks/kick-", 4, 128,96);
+        attackingJump = createAnimationFrame(PlayerPath + "Attacks/jump-attack-", 5, 128,96);
 
         this.setBounds(spawnPoint.x, spawnPoint.y, 128 / PPM, 96 / PPM);
     }
@@ -109,13 +112,19 @@ public final class Player extends Entity implements iPlayer {
                     if(attackTimer >= 0.1 * 4f)
                         isAttack = false;
                 }
+                case JA -> {
+                    if(attackTimer >= 0.1 * 5f)
+                        isAttack = false;
+                }
             }
         }
 
     }
     @Override
     public State getState() {
-        if(isAttack)
+        if(isDead)
+            return State.DEAD;
+        else if(isAttack)
             return State.ATTACKING;
         else if((body.getLinearVelocity().y > 0
                 || (body.getLinearVelocity().y < 0
@@ -137,8 +146,8 @@ public final class Player extends Entity implements iPlayer {
         super.draw(batch);
     }
     @Override
-    public void setDead() {
-
+    public void setDead(){
+        isDead = true;
     }
     private void handleInput(float delta) {
         float xSpeed = X_SPEED + X_SPEED * delta;
@@ -151,37 +160,32 @@ public final class Player extends Entity implements iPlayer {
         else
             body.setLinearVelocity(0,body.getLinearVelocity().y);
 
-        if(input.isKeyJustPressed(Input.Keys.UP) ||
+        if((input.isKeyJustPressed(Input.Keys.UP) ||
             input.isKeyJustPressed(Input.Keys.W) ||
-            input.isKeyJustPressed(Input.Keys.SPACE)
-            && currentState != State.JUMPING && currentState != State.FALLING)
+            input.isKeyJustPressed(Input.Keys.SPACE))
+            && currentState != State.ATTACKING && currentState != State.JUMPING && currentState != State.FALLING)
             body.applyLinearImpulse(new Vector2(0, ySpeed), body.getWorldCenter(), true);
 
         if(currentState != State.ATTACKING) {
-            if (input.isKeyJustPressed(Input.Keys.J)) {
+            if (input.isKeyJustPressed(Input.Keys.J))
                 currentAttackState = AttackState.A;
-                isAttack = true;
-                attackTimer = 0f;
-            }
-            if (input.isKeyJustPressed(Input.Keys.K)) {
+            if (input.isKeyJustPressed(Input.Keys.K))
                 currentAttackState = AttackState.B;
-                isAttack = true;
-                attackTimer = 0f;
-            }
-            if (input.isKeyJustPressed(Input.Keys.L)) {
+            if (input.isKeyJustPressed(Input.Keys.L))
                 currentAttackState = AttackState.C;
-                isAttack = true;
-                attackTimer = 0f;
-            }
-            if (input.isKeyJustPressed(Input.Keys.I)) {
+            if (input.isKeyJustPressed(Input.Keys.I))
                 currentAttackState = AttackState.D;
-                isAttack = true;
-                attackTimer = 0f;
-            }
-            if (input.isKeyJustPressed(Input.Keys.R)) {
+            if (input.isKeyJustPressed(Input.Keys.R))
                 currentAttackState = AttackState.K;
+            if(input.isKeyJustPressed(Input.Keys.J)
+                    || input.isKeyJustPressed(Input.Keys.K)
+                    || input.isKeyJustPressed(Input.Keys.L)
+                    || input.isKeyJustPressed(Input.Keys.I)
+                    || input.isKeyJustPressed(Input.Keys.R)) {
                 isAttack = true;
                 attackTimer = 0f;
+                if(currentState == State.JUMPING)
+                    currentAttackState = AttackState.JA;
             }
         }
     }
@@ -197,6 +201,7 @@ public final class Player extends Entity implements iPlayer {
                     case C -> region = attackingC.getKeyFrame(stateTimer, false);
                     case D -> region = attackingD.getKeyFrame(stateTimer, false);
                     case K -> region = attackingKick.getKeyFrame(stateTimer, false);
+                    case JA -> region = attackingJump.getKeyFrame(stateTimer,false);
                 }
                 break;
             case RUNNING:
