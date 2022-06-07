@@ -13,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.game.Entities.Interfaces.iPlayer;
 import com.game.Entities.Player;
 
-import static com.game.Helper.Constants.PPM;
+import static com.game.Helper.Constants.*;
 
 public final class Builder {
     private Builder() {}
@@ -77,6 +77,11 @@ public final class Builder {
     public static iPlayer spawnPlayer(World world, TiledMap tiledMap) {
         MapObjects objects = tiledMap.getLayers().get("PlayerSpawn").getObjects();
         Rectangle rectangle = ((RectangleMapObject)objects.get(0)).getRectangle();
-        return new Player(world, rectangle.x, rectangle.y);
+        return new Player(world, rectangle.x, rectangle.y, false, PlayerPath);
+    }
+    public static iPlayer spawnPlayer2(World world, TiledMap tiledMap) {
+        MapObjects objects = tiledMap.getLayers().get("PlayerSpawn").getObjects();
+        Rectangle rectangle = ((RectangleMapObject)objects.get(1)).getRectangle();
+        return new Player(world, rectangle.x, rectangle.y, true, Player2Path);
     }
 }
