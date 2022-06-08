@@ -15,9 +15,8 @@ import com.game.Entities.Interfaces.iPlayer;
 import com.game.Helper.Entity;
 
 import static com.game.Helper.Constants.*;
-import static com.game.Managers.AnimationManager.*;
 
-public final class Player extends Entity implements iPlayer {
+public abstract class Player extends Entity implements iPlayer {
 
     public enum State{IDLE, RUNNING, JUMPING, FALLING, DEAD, ATTACKING}
     private enum AttackState{A,B,D,K,JA}
@@ -25,31 +24,35 @@ public final class Player extends Entity implements iPlayer {
     private State currentState;
     private State previousState;
 
-    private final float X_SPEED = 2.5f;
-    private final float JUMP_SPEED = 9f;
-    private final Animation<TextureRegion> idle;
-    private final Animation<TextureRegion> running;
-    private final Animation<TextureRegion> jumping;
-    private final Animation<TextureRegion> falling;
-    private final Animation<TextureRegion> dead;
-    private final Animation<TextureRegion> attackingA;
-    private final Animation<TextureRegion> attackingB;
-    private final Animation<TextureRegion> attackingD;
-    private final Animation<TextureRegion> attackingKick;
-    private final Animation<TextureRegion> attackingJump;
+    protected float textureOffsetX;
+    protected float textureOffsetY;
+    protected float width;
+    protected float height;
+    protected float X_SPEED;
+    protected float JUMP_SPEED;
+    protected Animation<TextureRegion> idle;
+    protected Animation<TextureRegion> running;
+    protected Animation<TextureRegion> jumping;
+    protected Animation<TextureRegion> falling;
+    protected Animation<TextureRegion> dead;
+    protected Animation<TextureRegion> attackingA;
+    protected Animation<TextureRegion> attackingB;
+    protected Animation<TextureRegion> attackingD;
+    protected Animation<TextureRegion> attackingKick;
+    protected Animation<TextureRegion> attackingJump;
+    protected int attackAFrames;
+    protected int attackBFrames;
+    protected int attackDFrames;
+    protected int attackKFrames;
+    protected int attackJAFrames;
     private boolean runningRight = false;
     private boolean isAttack = false;
     private boolean isDead = false;
-    private final boolean second;
     private float stateTimer = 0f;
     private float attackTimer = 0f;
-    private final float textureOffsetX;
-    private final float textureOffsetY;
-    private final float width;
-    private final float height;
+    private final boolean second;
 
-
-    public Player(World world, float X, float Y, boolean second, String texturePath) {
+    public Player(World world, float X, float Y, boolean second) {
         super(world, X, Y);
         this.second = second;
         currentState = State.IDLE;
@@ -57,44 +60,9 @@ public final class Player extends Entity implements iPlayer {
 
         //TextureAtlas atlas = new TextureAtlas(texturePath + "Itachi.png");
         //setRegion(atlas.findRegion("something"));
-        if(!second) {
-            idle = createAnimationFrame(texturePath + "Idle/idle-", 6, 128, 96);
-            running = createAnimationFrame(texturePath + "Run/run-", 12, 128, 96);
-            jumping = createAnimationFrame(texturePath + "Jump/jump-", 12, 0.09f, 128, 96);
-            falling = createAnimationFrame(texturePath + "Fall/fall-", 4, 128, 96);
-            dead = createAnimationFrame(texturePath + "Dead/dead-", 6, 128, 96);
-            attackingA = createAnimationFrame(texturePath + "Attacks/attack-A", 7, 128, 96);
-            attackingB = createAnimationFrame(texturePath + "Attacks/attack-B", 6, 128, 96);
-            attackingD = createAnimationFrame(texturePath + "Attacks/attack-D", 9, 128, 96);
-            attackingKick = createAnimationFrame(texturePath + "Attacks/kick-", 4, 128, 96);
-            attackingJump = createAnimationFrame(texturePath + "Attacks/jump-attack-", 5, 128, 96);
-            this.setBounds(spawnPoint.x, spawnPoint.y, 128 / PPM, 96 / PPM);
-            textureOffsetX = 6f;
-            textureOffsetY = 25f;
-            width = 10f;
-            height = 30f;
-        }
-        else {
-            idle = createAnimationFrame(texturePath + "Idle/idle-", 10, 126, 126);
-            running = createAnimationFrame(texturePath + "Run/run-", 8, 126, 126);
-            jumping = createAnimationFrame(texturePath + "Jump/jump-", 6, 126, 126);
-            falling = createAnimationFrame(texturePath + "Fall/fall-", 3, 126, 126);
-            dead = createAnimationFrame(texturePath + "Dead/dead-", 6, 126, 126);
-            attackingA = createAnimationFrame(texturePath + "Attacks/attack-A", 7, 126, 126);
-            attackingB = createAnimationFrame(texturePath + "Attacks/attack-B", 6, 126, 126);
-            attackingD = createAnimationFrame(texturePath + "Attacks/attack-D", 9, 126, 126);
-            attackingKick = createAnimationFrame(texturePath + "Attacks/attack-A", 7, 126, 126);
-            attackingJump = createAnimationFrame(texturePath + "Attacks/attack-A", 7, 126, 126);
-            this.setBounds(spawnPoint.x, spawnPoint.y, 126 / PPM, 126 / PPM);
-            textureOffsetX = 0f;
-            textureOffsetY = 0f;
-            width = 10f;
-            height = 20f;
-        }
-        defineBody(BodyDef.BodyType.DynamicBody);
     }
     @Override
-    protected void defineFixture() {
+    protected final void defineFixture() {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(width / PPM, height / PPM);
 
@@ -122,33 +90,8 @@ public final class Player extends Entity implements iPlayer {
         else
             setCenter(getX(), getY());
         handleInput(delta);
-
         attackTimer += delta;
-        if(isAttack) {
-            switch (currentAttackState) {
-                case A -> {
-                    if(attackTimer >= 0.1 * 7f)
-                        isAttack = false;
-                }
-                case B -> {
-                    if(attackTimer >= 0.1 * 6f)
-                        isAttack = false;
-                }
-                case D -> {
-                    if(attackTimer >= 0.1 * 9f)
-                        isAttack = false;
-                }
-                case K -> {
-                    if(attackTimer >= 0.1 * 4f)
-                        isAttack = false;
-                }
-                case JA -> {
-                    if(attackTimer >= 0.1 * 5f)
-                        isAttack = false;
-                }
-            }
-        }
-
+        attackingPattern();
     }
     @Override
     public State getState() {
@@ -179,6 +122,32 @@ public final class Player extends Entity implements iPlayer {
     public void setDead(){
         isDead = true;
     }
+    private void attackingPattern() {
+        if (isAttack) {
+            switch (currentAttackState) {
+                case A -> {
+                    if (attackTimer >= 0.1 * attackAFrames)
+                        isAttack = false;
+                }
+                case B -> {
+                    if (attackTimer >= 0.1 * attackBFrames)
+                        isAttack = false;
+                }
+                case D -> {
+                    if (attackTimer >= 0.1 * attackDFrames)
+                        isAttack = false;
+                }
+                case K -> {
+                    if (attackTimer >= 0.1 * attackKFrames)
+                        isAttack = false;
+                }
+                case JA -> {
+                    if (attackTimer >= 0.1 * attackJAFrames)
+                        isAttack = false;
+                }
+            }
+        }
+    }
     private void handleInput(float delta) {
         float xSpeed = X_SPEED + X_SPEED * delta;
         float ySpeed = JUMP_SPEED + JUMP_SPEED * delta;
@@ -199,9 +168,9 @@ public final class Player extends Entity implements iPlayer {
             attackD = Input.Keys.NUMPAD_3;
             attackK = Input.Keys.NUMPAD_0;
         }
-        if(input.isKeyPressed(right))
+        if(input.isKeyPressed(right) && currentState != State.ATTACKING)
             body.setLinearVelocity(xSpeed, body.getLinearVelocity().y);
-        else if(input.isKeyPressed(left))
+        else if(input.isKeyPressed(left) && currentState != State.ATTACKING)
             body.setLinearVelocity(-xSpeed, body.getLinearVelocity().y);
         else
             body.setLinearVelocity(0,body.getLinearVelocity().y);
@@ -273,4 +242,5 @@ public final class Player extends Entity implements iPlayer {
         previousState = currentState;
         return region;
     }
+
 }

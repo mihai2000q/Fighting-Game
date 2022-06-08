@@ -10,8 +10,9 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.game.Entities.Characters.Heros;
+import com.game.Entities.Characters.Samuel;
 import com.game.Entities.Interfaces.iPlayer;
-import com.game.Entities.Player;
 
 import static com.game.Helper.Constants.*;
 
@@ -74,14 +75,18 @@ public final class Builder {
         chainShape.createChain(worldVertices);
         return chainShape;
     }
-    public static iPlayer spawnPlayer(World world, TiledMap tiledMap) {
+    public static iPlayer spawnPlayer(World world, TiledMap tiledMap, boolean second, String Name) {
         MapObjects objects = tiledMap.getLayers().get("PlayerSpawn").getObjects();
-        Rectangle rectangle = ((RectangleMapObject)objects.get(0)).getRectangle();
-        return new Player(world, rectangle.x, rectangle.y, false, PlayerPath);
+        int c = second ? 1 : 0;
+        Rectangle rectangle = ((RectangleMapObject)objects.get(c)).getRectangle();
+        return getCharacter(world, rectangle.x, rectangle.y, second, Name);
     }
-    public static iPlayer spawnPlayer2(World world, TiledMap tiledMap) {
-        MapObjects objects = tiledMap.getLayers().get("PlayerSpawn").getObjects();
-        Rectangle rectangle = ((RectangleMapObject)objects.get(1)).getRectangle();
-        return new Player(world, rectangle.x, rectangle.y, true, Player2Path);
+    private static iPlayer getCharacter(World world, float X, float Y, boolean second, String Name) {
+        return switch (Name) {
+            case "Heros" -> new Heros(world, X, Y,second);
+            case "Samuel" -> new Samuel(world, X, Y, second);
+            default -> new Heros(world, X, Y, second);
+        };
     }
+
 }
