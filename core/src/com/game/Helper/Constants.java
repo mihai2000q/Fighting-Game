@@ -7,6 +7,7 @@ public final class Constants {
     public static final float WORLD_HEIGHT = 900;
 
     public static final String PlayerPath = "Entities/Player/";
+    public static final String Player2Path = "Entities/Player2/";
 
     public static final String MapPath = "Maps/forest_tileset_lite/Map.tmx";
 }

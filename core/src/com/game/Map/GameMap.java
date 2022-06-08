@@ -31,6 +31,7 @@ public final class GameMap extends ScreenAdapter {
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
     private iPlayer player;
+    private iPlayer player2;
     private TiledMapTileLayer layer;
 
     private float viewportSize = 3.5f;
@@ -51,6 +52,7 @@ public final class GameMap extends ScreenAdapter {
         orthogonalTiledMapRenderer.setView(camera);
         Builder.buildMapObjects(world, tiledMap);
         player = Builder.spawnPlayer(world, tiledMap);
+        player2 = Builder.spawnPlayer2(world, tiledMap);
         layer = (TiledMapTileLayer) tiledMap.getLayers().get("Background");
     }
     @Override
@@ -79,12 +81,14 @@ public final class GameMap extends ScreenAdapter {
     public void draw() {
         spriteBatch.begin();
         player.draw(spriteBatch);
+        player2.draw(spriteBatch);
         spriteBatch.end();
     }
     private void update(float delta) {
         world.step(1 / 60f, 6, 2);
         cameraUpdate(delta);
         player.update(delta);
+        player2.update(delta);
     }
     private void cameraUpdate(float delta) {
         orthogonalTiledMapRenderer.setView(camera);
