@@ -41,7 +41,6 @@ public final class Player extends Entity implements iPlayer {
     private boolean isAttack = false;
     private boolean isDead = false;
     private final boolean second;
-    private final String texturePath;
     private float stateTimer = 0f;
     private float attackTimer = 0f;
     private final float textureOffsetX;
@@ -53,7 +52,6 @@ public final class Player extends Entity implements iPlayer {
     public Player(World world, float X, float Y, boolean second, String texturePath) {
         super(world, X, Y);
         this.second = second;
-        this.texturePath = texturePath;
         currentState = State.IDLE;
         previousState = State.IDLE;
 
