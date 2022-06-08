@@ -51,8 +51,8 @@ public final class GameMap extends ScreenAdapter {
         orthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / PPM);
         orthogonalTiledMapRenderer.setView(camera);
         Builder.buildMapObjects(world, tiledMap);
-        player = Builder.spawnPlayer(world, tiledMap);
-        player2 = Builder.spawnPlayer2(world, tiledMap);
+        player = Builder.spawnPlayer(world, tiledMap, false,"Heros");
+        player2 = Builder.spawnPlayer(world, tiledMap, true,"Samuel");
         layer = (TiledMapTileLayer) tiledMap.getLayers().get("Background");
     }
     @Override
