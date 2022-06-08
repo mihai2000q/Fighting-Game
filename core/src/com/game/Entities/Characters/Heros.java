@@ -15,7 +15,7 @@ public final class Heros extends Player {
     
     public Heros(World world, float X, float Y, boolean second) {
         super(world, X, Y, second);
-        X_SPEED = 2.5f;
+        X_SPEED = 2f;
         JUMP_SPEED = 5f;
         textureOffsetX = 6f;
         textureOffsetY = 25f;
@@ -29,8 +29,8 @@ public final class Heros extends Player {
         attackKFrames = 4;
         attackJAFrames = 5;
         idle = createAnimationFrame(HerosPath + "Idle/idle-", 6, textureWidth, textureHeight);
-        running = createAnimationFrame(HerosPath + "Run/run-", 12, textureWidth, textureHeight);
-        jumping = createAnimationFrame(HerosPath + "Jump/jump-", 12, 0.09f, textureWidth, textureHeight);
+        running = createAnimationFrame(HerosPath + "Run/run-", 12, 0.06f, textureWidth, textureHeight);
+        jumping = createAnimationFrame(HerosPath + "Jump/jump-", 12, 0.07f, textureWidth, textureHeight);
         falling = createAnimationFrame(HerosPath + "Fall/fall-", 4, textureWidth, textureHeight);
         dead = createAnimationFrame(HerosPath + "Dead/dead-", 6, textureWidth, textureHeight);
         attackingA = createAnimationFrame(HerosPath + "Attacks/attack-A", attackAFrames, textureWidth, textureHeight);

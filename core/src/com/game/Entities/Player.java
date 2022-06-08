@@ -168,9 +168,9 @@ public abstract class Player extends Entity implements iPlayer {
             attackD = Input.Keys.NUMPAD_3;
             attackK = Input.Keys.NUMPAD_0;
         }
-        if(input.isKeyPressed(right))
+        if(input.isKeyPressed(right) && currentState != State.ATTACKING)
             body.setLinearVelocity(xSpeed, body.getLinearVelocity().y);
-        else if(input.isKeyPressed(left))
+        else if(input.isKeyPressed(left) && currentState != State.ATTACKING)
             body.setLinearVelocity(-xSpeed, body.getLinearVelocity().y);
         else
             body.setLinearVelocity(0,body.getLinearVelocity().y);
