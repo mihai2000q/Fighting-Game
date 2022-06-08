@@ -22,7 +22,7 @@ public abstract class Entity extends Sprite implements iEntity {
         spawnPoint = new Vector2(X / Constants.PPM, Y / Constants.PPM);
         massData = new MassData();
     }
-    protected void defineBody(BodyDef.BodyType bodyType) {
+    protected final void defineBody(BodyDef.BodyType bodyType) {
         bodyDef.type = bodyType;
         bodyDef.position.set(spawnPoint);
         bodyDef.fixedRotation = true;

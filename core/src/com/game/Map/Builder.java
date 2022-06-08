@@ -77,8 +77,7 @@ public final class Builder {
     }
     public static iPlayer spawnPlayer(World world, TiledMap tiledMap, boolean second, String Name) {
         MapObjects objects = tiledMap.getLayers().get("PlayerSpawn").getObjects();
-        int c = second ? 1 : 0;
-        Rectangle rectangle = ((RectangleMapObject)objects.get(c)).getRectangle();
+        Rectangle rectangle = ((RectangleMapObject)objects.get(second ? 1 : 0)).getRectangle();
         return getCharacter(world, rectangle.x, rectangle.y, second, Name);
     }
     private static iPlayer getCharacter(World world, float X, float Y, boolean second, String Name) {

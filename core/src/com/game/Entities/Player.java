@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -58,7 +57,7 @@ public abstract class Player extends Entity implements iPlayer {
         currentState = State.IDLE;
         previousState = State.IDLE;
 
-        //TextureAtlas atlas = new TextureAtlas(texturePath + "Itachi.png");
+        //TextureAtlas atlas = new TextureAtlas(texturePath + "heros.png");
         //setRegion(atlas.findRegion("something"));
     }
     @Override
@@ -79,7 +78,7 @@ public abstract class Player extends Entity implements iPlayer {
         shape.dispose();
     }
     @Override
-    public void update(float delta) {
+    public final void update(float delta) {
         this.setRegion(getFrame(delta));
         if(textureOffsetX != 0 && textureOffsetY != 0) {
             if (runningRight)
@@ -94,7 +93,7 @@ public abstract class Player extends Entity implements iPlayer {
         attackingPattern();
     }
     @Override
-    public State getState() {
+    public final State getState() {
         if(isDead)
             return State.DEAD;
         else if(isAttack)
@@ -111,15 +110,15 @@ public abstract class Player extends Entity implements iPlayer {
             return State.IDLE;
     }
     @Override
-    public void restartPosition(){
+    public final void restartPosition(){
         body.setTransform(spawnPoint.x, spawnPoint.y + 100f / PPM, 0);
     }
     @Override
-    public void draw(Batch batch) {
+    public final void draw(Batch batch) {
         super.draw(batch);
     }
     @Override
-    public void setDead(){
+    public final void setDead(){
         isDead = true;
     }
     private void attackingPattern() {
