@@ -5,15 +5,10 @@ import com.badlogic.gdx.math.Vector3;
 import com.game.Entities.Interfaces.iPlayer;
 import com.game.Entities.Player;
 
-import static com.game.Helper.Constants.PPM;
-
 public final class CameraManager {
 
-    private static Vector3 cameraPosition = new Vector3();
-    private static final Vector3 target = new Vector3();
     private static float screenHalfWidth;
     private static float screenHalfHeight;
-    private static final float marginXError = 10f / PPM;
 
     public static float worldFullWidth;
     public static float worldFullHeight;
@@ -25,7 +20,8 @@ public final class CameraManager {
         screenHalfWidth = camera.viewportWidth / 2f;
         screenHalfHeight = camera.viewportHeight / 2f;
 
-        cameraPosition = camera.position;
+        Vector3 cameraPosition = camera.position;
+        Vector3 target = new Vector3();
         target.x = player.getX();
         target.y = player.getY();
         target.z = camera.position.z;
@@ -33,16 +29,16 @@ public final class CameraManager {
         if(player.getState() == Player.State.JUMPING)
             speedY = delta * 2f;
 
-        if(isPlayerOutsideXLeft())
+        if(isPlayerOutsideXLeft(target.x))
             target.x = screenHalfWidth;
 
-        if(isPlayerOutsideXRight())
-            target.x = worldFullWidth - screenHalfWidth - marginXError;
+        if(isPlayerOutsideXRight(target.x))
+            target.x = worldFullWidth - screenHalfWidth;
 
-        if(isPlayerOutsideYTop())
+        if(isPlayerOutsideYTop(target.y))
             target.y = worldFullHeight - screenHalfHeight;
 
-        if(isPlayerOutsideYBottom())
+        if(isPlayerOutsideYBottom(target.y))
             target.y = screenHalfHeight;
 
         if(player.getState() == Player.State.DEAD) {
@@ -56,16 +52,16 @@ public final class CameraManager {
         camera.position.set(cameraPosition);
         camera.update();
     }
-    private static boolean isPlayerOutsideXLeft(){
-        return target.x <= screenHalfWidth;
+    private static boolean isPlayerOutsideXLeft(float axisX){
+        return axisX <= screenHalfWidth;
     }
-    private static boolean isPlayerOutsideXRight(){
-        return target.x >= worldFullWidth - screenHalfWidth;
+    private static boolean isPlayerOutsideXRight(float axisX){
+        return axisX >= worldFullWidth - screenHalfWidth;
     }
-    private static boolean isPlayerOutsideYTop(){
-        return target.y >= worldFullHeight - screenHalfHeight;
+    private static boolean isPlayerOutsideYTop(float axisY){
+        return axisY >= worldFullHeight - screenHalfHeight;
     }
-    private static boolean isPlayerOutsideYBottom(){
-        return target.y <= screenHalfHeight;
+    private static boolean isPlayerOutsideYBottom(float axisY){
+        return axisY <= screenHalfHeight;
     }
 }

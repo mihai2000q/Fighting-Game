@@ -34,7 +34,7 @@ public final class GameMap extends ScreenAdapter {
     private iPlayer player2;
     private TiledMapTileLayer layer;
 
-    private float viewportSize = 3.5f;
+    private final float viewportSize = 3.5f;
 
     public GameMap() {
         spriteBatch = new SpriteBatch();
