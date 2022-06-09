@@ -2,9 +2,9 @@ package com.game.Entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -17,8 +17,8 @@ import static com.game.Helper.Constants.*;
 
 public abstract class Player extends Entity implements iPlayer {
 
-    public enum State{IDLE, RUNNING, JUMPING, FALLING, DEAD, ATTACKING}
-    private enum AttackState{A,B,D,K,JA}
+    public enum State {IDLE, RUNNING, JUMPING, FALLING, DEAD, ATTACKING}
+    private enum AttackState {A, B, C, D, K, JA}
     private AttackState currentAttackState;
     private State currentState;
     private State previousState;
@@ -56,9 +56,6 @@ public abstract class Player extends Entity implements iPlayer {
         this.second = second;
         currentState = State.IDLE;
         previousState = State.IDLE;
-
-        //TextureAtlas atlas = new TextureAtlas(texturePath + "heros.png");
-        //setRegion(atlas.findRegion("something"));
     }
     @Override
     protected final void defineFixture() {

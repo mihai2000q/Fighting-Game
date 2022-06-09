@@ -1,0 +1,75 @@
+Heros.png
+size: 1412, 620
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+attack-A
+  rotate: false
+  xy: 1, 1
+  size: 896, 96
+  orig: 896, 96
+  offset: 0, 0
+  index: -1
+attack-B
+  rotate: false
+  xy: 1, 99
+  size: 768, 96
+  orig: 768, 96
+  offset: 0, 0
+  index: -1
+attack-D
+  rotate: false
+  xy: 1, 197
+  size: 896, 96
+  orig: 896, 96
+  offset: 0, 0
+  index: -1
+attack-JA
+  rotate: false
+  xy: 771, 99
+  size: 640, 96
+  orig: 640, 96
+  offset: 0, 0
+  index: -1
+attack-K
+  rotate: false
+  xy: 899, 1
+  size: 512, 96
+  orig: 512, 96
+  offset: 0, 0
+  index: -1
+dead
+  rotate: false
+  xy: 643, 295
+  size: 768, 128
+  orig: 768, 128
+  offset: 0, 0
+  index: -1
+fall
+  rotate: false
+  xy: 899, 197
+  size: 512, 96
+  orig: 512, 96
+  offset: 0, 0
+  index: -1
+idle
+  rotate: false
+  xy: 1, 295
+  size: 640, 96
+  orig: 640, 96
+  offset: 0, 0
+  index: -1
+jump
+  rotate: false
+  xy: 1, 425
+  size: 1408, 96
+  orig: 1408, 96
+  offset: 0, 0
+  index: -1
+run
+  rotate: false
+  xy: 1, 523
+  size: 1408, 96
+  orig: 1408, 96
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,68 @@
+Samuel.png
+size: 1764, 630
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+attack-A
+  rotate: false
+  xy: 0, 0
+  size: 882, 126
+  orig: 882, 126
+  offset: 0, 0
+  index: -1
+attack-B
+  rotate: false
+  xy: 882, 0
+  size: 756, 126
+  orig: 756, 126
+  offset: 0, 0
+  index: -1
+attack-C
+  rotate: false
+  xy: 0, 126
+  size: 1134, 126
+  orig: 1134, 126
+  offset: 0, 0
+  index: -1
+dead
+  rotate: false
+  xy: 0, 252
+  size: 1386, 126
+  orig: 1386, 126
+  offset: 0, 0
+  index: -1
+fall
+  rotate: false
+  xy: 1134, 126
+  size: 378, 126
+  orig: 378, 126
+  offset: 0, 0
+  index: -1
+hit
+  rotate: false
+  xy: 1386, 252
+  size: 378, 126
+  orig: 378, 126
+  offset: 0, 0
+  index: -1
+idle
+  rotate: false
+  xy: 0, 378
+  size: 1008, 126
+  orig: 1008, 126
+  offset: 0, 0
+  index: -1
+jump
+  rotate: false
+  xy: 1008, 378
+  size: 756, 126
+  orig: 756, 126
+  offset: 0, 0
+  index: -1
+run
+  rotate: false
+  xy: 0, 504
+  size: 1008, 126
+  orig: 1008, 126
+  offset: 0, 0
+  index: -1
