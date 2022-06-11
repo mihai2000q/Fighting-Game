@@ -26,7 +26,7 @@ public final class Heros extends Player {
         textureHeight = 96;
         attackAFrames = 7;
         attackBFrames = 6;
-        attackDFrames = 9;
+        attackCFrames = 9;
         attackKFrames = 4;
         attackJAFrames = 5;
         animations();
@@ -42,7 +42,7 @@ public final class Heros extends Player {
         dead = createAnimationFrame(atlas.findRegion("dead"), 6, textureWidth, textureHeight);
         attackingA = createAnimationFrame(atlas.findRegion("attack-A"), attackAFrames, textureWidth, textureHeight);
         attackingB = createAnimationFrame(atlas.findRegion("attack-B"), attackBFrames, textureWidth, textureHeight);
-        attackingD = createAnimationFrame(atlas.findRegion("attack-D"), attackDFrames, textureWidth, textureHeight);
+        attackingC = createAnimationFrame(atlas.findRegion("attack-D"), attackCFrames, textureWidth, textureHeight);
         attackingKick = createAnimationFrame(atlas.findRegion("attack-K"), attackKFrames, textureWidth, textureHeight);
         attackingJump = createAnimationFrame(atlas.findRegion("attack-JA"), attackJAFrames, textureWidth, textureHeight);
     }

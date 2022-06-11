@@ -25,7 +25,7 @@ public final class Samuel extends Player {
         textureHeight = 126;
         attackAFrames = 7;
         attackBFrames = 6;
-        attackDFrames = 9;
+        attackCFrames = 9;
         attackKFrames = attackAFrames;
         attackJAFrames = attackAFrames;
         animations();
@@ -41,7 +41,7 @@ public final class Samuel extends Player {
         dead = createAnimationFrame(atlas.findRegion("dead"), 6, textureWidth, textureHeight);
         attackingA = createAnimationFrame(atlas.findRegion("attack-A"), 7, textureWidth, textureHeight);
         attackingB = createAnimationFrame(atlas.findRegion("attack-B"), 6, textureWidth, textureHeight);
-        attackingD = createAnimationFrame(atlas.findRegion("attack-C"),9, textureWidth, textureHeight);
+        attackingC = createAnimationFrame(atlas.findRegion("attack-C"),9, textureWidth, textureHeight);
         attackingKick = createAnimationFrame(atlas.findRegion("attack-A"), 7, textureWidth, textureHeight);
         attackingJump = createAnimationFrame(atlas.findRegion("attack-A"), 7, textureWidth, textureHeight);
     }

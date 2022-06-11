@@ -18,7 +18,7 @@ import static com.game.Helper.Constants.*;
 public abstract class Player extends Entity implements iPlayer {
 
     public enum State {IDLE, RUNNING, JUMPING, FALLING, DEAD, ATTACKING}
-    private enum AttackState {A, B, C, D, K, JA}
+    private enum AttackState {A, B, C, K, JA}
     private AttackState currentAttackState;
     private State currentState;
     private State previousState;
@@ -36,12 +36,12 @@ public abstract class Player extends Entity implements iPlayer {
     protected Animation<TextureRegion> dead;
     protected Animation<TextureRegion> attackingA;
     protected Animation<TextureRegion> attackingB;
-    protected Animation<TextureRegion> attackingD;
+    protected Animation<TextureRegion> attackingC;
     protected Animation<TextureRegion> attackingKick;
     protected Animation<TextureRegion> attackingJump;
     protected int attackAFrames;
     protected int attackBFrames;
-    protected int attackDFrames;
+    protected int attackCFrames;
     protected int attackKFrames;
     protected int attackJAFrames;
     private boolean runningRight = false;
@@ -129,8 +129,8 @@ public abstract class Player extends Entity implements iPlayer {
                     if (attackTimer >= 0.1 * attackBFrames)
                         isAttack = false;
                 }
-                case D -> {
-                    if (attackTimer >= 0.1 * attackDFrames)
+                case C -> {
+                    if (attackTimer >= 0.1 * attackCFrames)
                         isAttack = false;
                 }
                 case K -> {
@@ -181,7 +181,7 @@ public abstract class Player extends Entity implements iPlayer {
             if (input.isKeyJustPressed(attackB))
                 currentAttackState = AttackState.B;
             if (input.isKeyJustPressed(attackD))
-                currentAttackState = AttackState.D;
+                currentAttackState = AttackState.C;
             if (input.isKeyJustPressed(attackK))
                 currentAttackState = AttackState.K;
             if(input.isKeyJustPressed(attackA)
@@ -204,7 +204,7 @@ public abstract class Player extends Entity implements iPlayer {
                 switch(currentAttackState) {
                     case A -> region = attackingA.getKeyFrame(stateTimer, false);
                     case B -> region = attackingB.getKeyFrame(stateTimer, false);
-                    case D -> region = attackingD.getKeyFrame(stateTimer, false);
+                    case C -> region = attackingC.getKeyFrame(stateTimer, false);
                     case K -> region = attackingKick.getKeyFrame(stateTimer, false);
                     case JA -> region = attackingJump.getKeyFrame(stateTimer,false);
                 }
@@ -238,5 +238,4 @@ public abstract class Player extends Entity implements iPlayer {
         previousState = currentState;
         return region;
     }
-
 }
