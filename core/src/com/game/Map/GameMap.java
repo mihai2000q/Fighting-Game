@@ -34,7 +34,7 @@ public final class GameMap extends ScreenAdapter {
     private iPlayer player2;
     private TiledMapTileLayer layer;
 
-    private float viewportSize = 3.5f;
+    private final float viewportSize = 3.5f;
 
     public GameMap() {
         spriteBatch = new SpriteBatch();
@@ -51,8 +51,8 @@ public final class GameMap extends ScreenAdapter {
         orthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / PPM);
         orthogonalTiledMapRenderer.setView(camera);
         Builder.buildMapObjects(world, tiledMap);
-        player = Builder.spawnPlayer(world, tiledMap, false,"Heros");
-        player2 = Builder.spawnPlayer(world, tiledMap, true,"Samuel");
+        player = Builder.spawnPlayer(world, tiledMap, false, Characters.Heros);
+        player2 = Builder.spawnPlayer(world, tiledMap, true, Characters.Samuel);
         layer = (TiledMapTileLayer) tiledMap.getLayers().get("Background");
     }
     @Override
@@ -73,8 +73,9 @@ public final class GameMap extends ScreenAdapter {
     }
     @Override
     public void dispose() {
-        world.dispose();
         spriteBatch.dispose();
+        world.dispose();
+        debugRenderer.dispose();
         tiledMap.dispose();
         orthogonalTiledMapRenderer.dispose();
     }

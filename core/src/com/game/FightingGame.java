@@ -8,7 +8,7 @@ public final class FightingGame extends Game {
 	private GameMap gameMap;
 	@Override
 	public void create() {
-		gameMap = new GameMap();
+		gameMap = new GameMap(); //has to be here and not in constructor because this method is run first
 		setScreen(gameMap);
 	}
 	@Override

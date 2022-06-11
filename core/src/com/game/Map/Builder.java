@@ -75,17 +75,15 @@ public final class Builder {
         chainShape.createChain(worldVertices);
         return chainShape;
     }
-    public static iPlayer spawnPlayer(World world, TiledMap tiledMap, boolean second, String Name) {
+    public static iPlayer spawnPlayer(World world, TiledMap tiledMap, boolean second, Characters character) {
         MapObjects objects = tiledMap.getLayers().get("PlayerSpawn").getObjects();
-        int c = second ? 1 : 0;
-        Rectangle rectangle = ((RectangleMapObject)objects.get(c)).getRectangle();
-        return getCharacter(world, rectangle.x, rectangle.y, second, Name);
+        Rectangle rectangle = ((RectangleMapObject)objects.get(second ? 1 : 0)).getRectangle();
+        return getCharacter(world, rectangle.x, rectangle.y, second, character);
     }
-    private static iPlayer getCharacter(World world, float X, float Y, boolean second, String Name) {
-        return switch (Name) {
-            case "Heros" -> new Heros(world, X, Y,second);
-            case "Samuel" -> new Samuel(world, X, Y, second);
-            default -> new Heros(world, X, Y, second);
+    private static iPlayer getCharacter(World world, float X, float Y, boolean second, Characters character) {
+        return switch (character) {
+            case Heros -> new Heros(world, X, Y,second);
+            case Samuel -> new Samuel(world, X, Y, second);
         };
     }
 
