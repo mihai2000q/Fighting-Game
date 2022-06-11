@@ -15,18 +15,19 @@ public final class Samuel extends Player {
 
     public Samuel(World world, float X, float Y, boolean second) {
         super(world, X, Y, second);
-        X_SPEED = 2f;
+        X_SPEED = 2.3f;
         JUMP_SPEED = 7f;
         textureOffsetX = 0f;
         textureOffsetY = 0f;
-        width = 10f;
+        width = 13f;
         height = 20f;
         textureWidth = 126;
         textureHeight = 126;
         attackAFrames = 7;
         attackBFrames = 6;
         attackCFrames = 9;
-        attackKFrames = attackAFrames;
+        attackDFrames = attackBFrames;
+        attackKFrames = 0;
         attackJAFrames = attackAFrames;
         animations();
         this.setBounds(spawnPoint.x, spawnPoint.y, textureWidth / PPM, textureHeight / PPM);
@@ -39,10 +40,11 @@ public final class Samuel extends Player {
         jumping = createAnimationFrame(atlas.findRegion("jump"), 6, textureWidth, textureHeight);
         falling = createAnimationFrame(atlas.findRegion("fall"), 3, textureWidth, textureHeight);
         dead = createAnimationFrame(atlas.findRegion("dead"), 6, textureWidth, textureHeight);
-        attackingA = createAnimationFrame(atlas.findRegion("attack-A"), 7, textureWidth, textureHeight);
-        attackingB = createAnimationFrame(atlas.findRegion("attack-B"), 6, textureWidth, textureHeight);
-        attackingC = createAnimationFrame(atlas.findRegion("attack-C"),9, textureWidth, textureHeight);
-        attackingKick = createAnimationFrame(atlas.findRegion("attack-A"), 7, textureWidth, textureHeight);
-        attackingJump = createAnimationFrame(atlas.findRegion("attack-A"), 7, textureWidth, textureHeight);
+        attackingA = createAnimationFrame(atlas.findRegion("attack-A"), attackAFrames, textureWidth, textureHeight);
+        attackingB = createAnimationFrame(atlas.findRegion("attack-B"), attackBFrames, textureWidth, textureHeight);
+        attackingC = createAnimationFrame(atlas.findRegion("attack-C"),attackCFrames, textureWidth, textureHeight);
+        attackingD = createAnimationFrame(atlas.findRegion("attack-B"),attackBFrames, textureWidth, textureHeight);
+        attackingKick = null;
+        attackingJump = createAnimationFrame(atlas.findRegion("attack-A"), attackJAFrames, textureWidth, textureHeight);
     }
 }
