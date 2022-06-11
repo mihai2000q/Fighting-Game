@@ -27,7 +27,7 @@ public final class Samuel extends Player {
         attackBFrames = 6;
         attackCFrames = 9;
         attackDFrames = attackBFrames;
-        attackKFrames = 0;
+        attackKFrames = 0;  //no kick attack :(
         attackJAFrames = attackAFrames;
         animations();
         this.setBounds(spawnPoint.x, spawnPoint.y, textureWidth / PPM, textureHeight / PPM);
