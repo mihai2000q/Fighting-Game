@@ -15,7 +15,7 @@ public final class AnimationManager {
                                                                 float FrameDuration , int Width, int Height) {
         Array<TextureRegion> frames = new Array<>();
         for(int i = 0; i < NumberOfFrames; i ++)
-            frames.add(new TextureRegion(atlas, i * Width, 0,Width, Height));
+            frames.add(new TextureRegion(atlas, i * Width, 0, Width, Height));
         return new Animation<>(FrameDuration,frames);
     }
 }

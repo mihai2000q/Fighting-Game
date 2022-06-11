@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.game.Entities.Interfaces.iPlayer;
+import com.game.Helper.Constants;
 import com.game.Managers.CameraManager;
 
 import static com.game.Helper.Constants.*;
@@ -51,8 +52,8 @@ public final class GameMap extends ScreenAdapter {
         orthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / PPM);
         orthogonalTiledMapRenderer.setView(camera);
         Builder.buildMapObjects(world, tiledMap);
-        player = Builder.spawnPlayer(world, tiledMap, false,"Heros");
-        player2 = Builder.spawnPlayer(world, tiledMap, true,"Samuel");
+        player = Builder.spawnPlayer(world, tiledMap, false, Characters.Heros);
+        player2 = Builder.spawnPlayer(world, tiledMap, true,Characters.Samuel);
         layer = (TiledMapTileLayer) tiledMap.getLayers().get("Background");
     }
     @Override
