@@ -10,4 +10,5 @@ public interface iPlayer extends iEntity {
     Player.State getState();
     void restartPosition();
     void setDead();
+    void setHit(boolean value);
 }

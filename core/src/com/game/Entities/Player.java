@@ -14,7 +14,7 @@ import static com.game.Helper.Constants.*;
 
 public abstract class Player extends Entity implements iPlayer {
 
-    public enum State {IDLE, RUNNING, JUMPING, FALLING, DEAD, ATTACKING}
+    public enum State {IDLE, RUNNING, JUMPING, FALLING, DEAD, ATTACKING, HIT}
     private enum AttackState {A, B, C, D, K, JA}
     private AttackState currentAttackState;
     private State currentState;
@@ -24,13 +24,14 @@ public abstract class Player extends Entity implements iPlayer {
     protected float textureOffsetY;
     protected float width;
     protected float height;
-    protected float X_SPEED;
-    protected float JUMP_SPEED;
+    protected float x_speed;
+    protected float jump_speed;
     protected Animation<TextureRegion> idle;
     protected Animation<TextureRegion> running;
     protected Animation<TextureRegion> jumping;
     protected Animation<TextureRegion> falling;
     protected Animation<TextureRegion> dead;
+    protected Animation<TextureRegion> hit;
     protected Animation<TextureRegion> attackingA;
     protected Animation<TextureRegion> attackingB;
     protected Animation<TextureRegion> attackingC;
@@ -48,6 +49,7 @@ public abstract class Player extends Entity implements iPlayer {
     private boolean runningRight = false;
     private boolean isAttack = false;
     private boolean isDead = false;
+    private boolean isHit = false;
     private int attackKeyPressed = 0;
     private float stateTimer = 0f;
     private float attackTimer = 0f;
@@ -98,6 +100,8 @@ public abstract class Player extends Entity implements iPlayer {
     public final State getState() {
         if(isDead)
             return State.DEAD;
+        else if(isHit)
+            return State.HIT;
         else if(isAttack)
             return State.ATTACKING;
         else if((body.getLinearVelocity().y > 0
@@ -122,6 +126,15 @@ public abstract class Player extends Entity implements iPlayer {
     @Override
     public final void setDead(){
         isDead = true;
+    }
+    @Override
+    public final void setHit(boolean value){
+        float x_speed = 1f;
+        float jump_speed = 1f;
+        float xSpeed = x_speed + x_speed * Gdx.graphics.getDeltaTime();
+        float ySpeed = jump_speed + jump_speed * Gdx.graphics.getDeltaTime();
+        isHit = value;
+        body.applyLinearImpulse(new Vector2(xSpeed, ySpeed), body.getWorldCenter(), true);
     }
     private void attackingPattern() {
         if (isAttack) {
@@ -175,8 +188,8 @@ public abstract class Player extends Entity implements iPlayer {
         body.getFixtureList().get(2).setFilterData(swordDestroyedFilter);
     }
     private void handleInput(float delta) {
-        float xSpeed = X_SPEED + X_SPEED * delta;
-        float ySpeed = JUMP_SPEED + JUMP_SPEED * delta;
+        float xSpeed = x_speed + x_speed * delta;
+        float ySpeed = jump_speed + jump_speed * delta;
         Input input = Gdx.input;
         var up = Input.Keys.W;
         var left = Input.Keys.A;
@@ -261,6 +274,9 @@ public abstract class Player extends Entity implements iPlayer {
                 break;
             case DEAD:
                 region = dead.getKeyFrame(stateTimer,false);
+                break;
+            case HIT:
+                region = hit.getKeyFrame(stateTimer,true);
                 break;
             case IDLE:
             default:

@@ -16,8 +16,8 @@ public final class Heros extends Player {
 
     public Heros(World world, float X, float Y, boolean second) {
         super(world, X, Y, second);
-        X_SPEED = 1.25f;
-        JUMP_SPEED = 5f;
+        x_speed = 1.25f;
+        jump_speed = 5f;
         textureOffsetX = 6.5f;
         textureOffsetY = 25f;
         width = 10f;
@@ -41,6 +41,7 @@ public final class Heros extends Player {
         jumping = createAnimationFrame(atlas.findRegion("jump"), 11, 0.06f, textureWidth, textureHeight);
         falling = createAnimationFrame(atlas.findRegion("fall"), 4, textureWidth, textureHeight);
         dead = createAnimationFrame(atlas.findRegion("dead"), 6, textureWidth, textureHeight);
+        hit = createAnimationFrame(atlas.findRegion("hit"), 13, textureWidth, textureHeight);
         attackingA = createAnimationFrame(atlas.findRegion("attack-A"), attackAFrames, textureWidth, textureHeight);
         attackingB = createAnimationFrame(atlas.findRegion("attack-B"), attackBFrames, textureWidth, textureHeight);
         attackingC = createAnimationFrame(atlas.findRegion("attack-D"), attackDFrames, textureWidth, textureHeight);

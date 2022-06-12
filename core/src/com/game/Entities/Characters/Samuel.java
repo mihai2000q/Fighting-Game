@@ -15,8 +15,8 @@ public final class Samuel extends Player {
 
     public Samuel(World world, float X, float Y, boolean second) {
         super(world, X, Y, second);
-        X_SPEED = 1.5f;
-        JUMP_SPEED = 7f;
+        x_speed = 1.5f;
+        jump_speed = 7f;
         textureOffsetX = 0f;
         textureOffsetY = 0f;
         width = 13f;
@@ -40,6 +40,7 @@ public final class Samuel extends Player {
         jumping = createAnimationFrame(atlas.findRegion("jump"), 6, textureWidth, textureHeight);
         falling = createAnimationFrame(atlas.findRegion("fall"), 3, textureWidth, textureHeight);
         dead = createAnimationFrame(atlas.findRegion("dead"), 6, textureWidth, textureHeight);
+        hit = createAnimationFrame(atlas.findRegion("hit"), 3, textureWidth, textureHeight);
         attackingA = createAnimationFrame(atlas.findRegion("attack-A"), attackAFrames, textureWidth, textureHeight);
         attackingB = createAnimationFrame(atlas.findRegion("attack-B"), attackBFrames, textureWidth, textureHeight);
         attackingC = createAnimationFrame(atlas.findRegion("attack-C"),attackCFrames, textureWidth, textureHeight);
