@@ -69,6 +69,7 @@ public abstract class Player extends Entity implements iPlayer {
         fixtureDef.density = 1f;
         fixtureDef.friction = 0f;
         fixtureDef.restitution = 0f;
+        fixtureDef.filter.categoryBits = second ? PLAYER2_BIT : PLAYER_BIT;
         body.createFixture(fixtureDef).setUserData("Player");
 
         body.setUserData(this);
@@ -140,7 +141,7 @@ public abstract class Player extends Entity implements iPlayer {
                 }
                 case B -> {
                     if (attackTimer >= 0.1 * attackBFrames) {
-                        if(attackKeyPressed <= 1) {
+                        if(attackKeyPressed < 1) {
                             currentAttackState = AttackState.NO;
                             isAttack = false;
                             attackKeyPressed = 0;

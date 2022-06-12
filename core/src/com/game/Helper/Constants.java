@@ -11,4 +11,8 @@ public final class Constants {
     public static final String SamuelPath = "Entities/Characters/Samuel.txt";
 
     public static final String MapPath = "Maps/forest_tileset_lite/Map.tmx";
+
+    public static final short GROUND_BIT = 1;
+    public static final short PLAYER_BIT = 2;
+    public static final short PLAYER2_BIT = 4;
 }

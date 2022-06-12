@@ -43,6 +43,7 @@ public final class Builder {
             FixtureDef fixtureDef = new FixtureDef();
             fixtureDef.shape = shape;
             fixtureDef.density = 1f;
+            fixtureDef.filter.categoryBits = GROUND_BIT;
 
             MassData massData = new MassData();
             massData.mass = 3f;
