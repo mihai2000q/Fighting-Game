@@ -14,15 +14,15 @@ public final class WorldContactListener implements ContactListener {
         if((fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits) ==
                 (PLAYER_BIT | SWORD_BIT))
             if(fixB.getUserData().equals("Sword"))
-                ((iPlayer)fixA.getBody().getUserData()).setHit(true);
+                ((iPlayer)fixA.getBody().getUserData()).setHit(1,1);
             else
-                ((iPlayer)fixB.getBody().getUserData()).setHit(true);
+                ((iPlayer)fixB.getBody().getUserData()).setHit(1,1);
         if((fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits) ==
                 (PLAYER2_BIT | SWORD_BIT))
             if(fixB.getUserData().equals("Sword"))
-                ((iPlayer)fixA.getBody().getUserData()).setHit(true);
+                ((iPlayer)fixA.getBody().getUserData()).setHit(1,1);
             else
-                ((iPlayer)fixB.getBody().getUserData()).setHit(true);
+                ((iPlayer)fixB.getBody().getUserData()).setHit(1,1);
     }
     @Override
     public void endContact(Contact contact) {
@@ -32,15 +32,15 @@ public final class WorldContactListener implements ContactListener {
         if((fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits) ==
                 (PLAYER_BIT | SWORD_BIT))
             if(fixB.getUserData().equals("Sword"))
-                ((iPlayer)fixA.getBody().getUserData()).setHit(false);
+                ((iPlayer)fixA.getBody().getUserData()).resetHit();
             else
-                ((iPlayer)fixB.getBody().getUserData()).setHit(false);
+                ((iPlayer)fixB.getBody().getUserData()).resetHit();
         if((fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits) ==
                 (PLAYER2_BIT | SWORD_BIT))
             if(fixB.getUserData().equals("Sword"))
-                ((iPlayer)fixA.getBody().getUserData()).setHit(false);
+                ((iPlayer)fixA.getBody().getUserData()).resetHit();
             else
-                ((iPlayer)fixB.getBody().getUserData()).setHit(false);
+                ((iPlayer)fixB.getBody().getUserData()).resetHit();
     }
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {

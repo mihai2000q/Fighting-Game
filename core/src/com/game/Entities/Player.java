@@ -128,13 +128,15 @@ public abstract class Player extends Entity implements iPlayer {
         isDead = true;
     }
     @Override
-    public final void setHit(boolean value){
-        float x_speed = 1f;
-        float jump_speed = 1f;
-        float xSpeed = x_speed + x_speed * Gdx.graphics.getDeltaTime();
-        float ySpeed = jump_speed + jump_speed * Gdx.graphics.getDeltaTime();
-        isHit = value;
-        body.applyLinearImpulse(new Vector2(xSpeed, ySpeed), body.getWorldCenter(), true);
+    public final void setHit(float xSpeed, float ySpeed) {
+        float x_Speed = xSpeed + xSpeed * Gdx.graphics.getDeltaTime();
+        float y_Speed = ySpeed + ySpeed * Gdx.graphics.getDeltaTime();
+        isHit = true;
+        body.applyLinearImpulse(new Vector2(x_Speed, y_Speed), body.getWorldCenter(), true);
+    }
+    @Override
+    public final void resetHit(){
+        isHit = false;
     }
     private void attackingPattern() {
         if (isAttack) {
