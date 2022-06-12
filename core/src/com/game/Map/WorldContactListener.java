@@ -2,8 +2,7 @@ package com.game.Map;
 
 import com.badlogic.gdx.physics.box2d.*;
 
-import static com.game.Helper.Constants.PLAYER2_BIT;
-import static com.game.Helper.Constants.PLAYER_BIT;
+import static com.game.Helper.Constants.*;
 
 public final class WorldContactListener implements ContactListener {
     @Override
@@ -12,21 +11,26 @@ public final class WorldContactListener implements ContactListener {
         Fixture fixB = contact.getFixtureB();
 
         if((fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits) ==
-                (PLAYER_BIT | PLAYER2_BIT))
-            if(fixA.getFilterData().categoryBits == PLAYER_BIT)
-                System.out.println("CONTACT");
+                (PLAYER_BIT | SWORD_BIT))
+            if(fixB.getUserData().equals("Sword"))
+                System.out.println("Player 1 got hit");
+            else
+                System.out.println("Player 1 got hit");
+        if((fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits) ==
+                (PLAYER2_BIT | SWORD_BIT))
+            if(fixB.getUserData().equals("Sword"))
+                System.out.println("Player 2 got hit");
+            else
+                System.out.println("Player 2 got hit");
     }
-
     @Override
     public void endContact(Contact contact) {
 
     }
-
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
 
     }
-
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
 

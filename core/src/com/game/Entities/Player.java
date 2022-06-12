@@ -6,9 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.game.Entities.Interfaces.iPlayer;
 import com.game.Helper.Entity;
 
@@ -17,7 +15,7 @@ import static com.game.Helper.Constants.*;
 public abstract class Player extends Entity implements iPlayer {
 
     public enum State {IDLE, RUNNING, JUMPING, FALLING, DEAD, ATTACKING}
-    private enum AttackState {A, B, C, D, K, JA, NO}
+    private enum AttackState {A, B, C, D, K, JA}
     private AttackState currentAttackState;
     private State currentState;
     private State previousState;
@@ -45,6 +43,8 @@ public abstract class Player extends Entity implements iPlayer {
     protected int attackDFrames;
     protected int attackKFrames;
     protected int attackJAFrames;
+    private Filter swordFilter;
+    private Filter swordDestroyedFilter;
     private boolean runningRight = false;
     private boolean isAttack = false;
     private boolean isDead = false;
@@ -76,6 +76,8 @@ public abstract class Player extends Entity implements iPlayer {
         massData.mass = 1.5f;
         body.setMassData(massData);
         shape.dispose();
+
+        attackFixture();
     }
     @Override
     public final void update(float delta) {
@@ -126,11 +128,8 @@ public abstract class Player extends Entity implements iPlayer {
             switch (currentAttackState) {
                 case A -> {
                     if (attackTimer >= 0.1 * attackAFrames) {
-                        if(attackKeyPressed == 1) {
-                            currentAttackState = AttackState.NO;
-                            isAttack = false;
-                            attackKeyPressed = 0;
-                        }
+                        if(attackKeyPressed == 1)
+                            resetAttack();
                         else if(attackKeyPressed > 1) {
                             currentAttackState = AttackState.B;
                             attackTimer = 0f;
@@ -141,11 +140,8 @@ public abstract class Player extends Entity implements iPlayer {
                 }
                 case B -> {
                     if (attackTimer >= 0.1 * attackBFrames) {
-                        if(attackKeyPressed < 1) {
-                            currentAttackState = AttackState.NO;
-                            isAttack = false;
-                            attackKeyPressed = 0;
-                        }
+                        if(attackKeyPressed < 1)
+                            resetAttack();
                         else {
                             currentAttackState = AttackState.C;
                             attackTimer = 0f;
@@ -154,11 +150,8 @@ public abstract class Player extends Entity implements iPlayer {
                     }
                 }
                 case C -> {
-                    if (attackTimer >= 0.1 * attackCFrames) {
-                        currentAttackState = AttackState.NO;
-                        isAttack = false;
-                        attackKeyPressed = 0;
-                    }
+                    if (attackTimer >= 0.1 * attackCFrames)
+                        resetAttack();
                 }
                 case D -> {
                     if (attackTimer >= 0.1 * attackDFrames)
@@ -169,13 +162,17 @@ public abstract class Player extends Entity implements iPlayer {
                         isAttack = false;
                 }
                 case JA -> {
-                    if (attackTimer >= 0.1 * attackJAFrames) {
-                        isAttack = false;
-                        attackKeyPressed = 0;
-                    }
+                    if (attackTimer >= 0.1 * attackJAFrames)
+                        resetAttack();
                 }
             }
         }
+    }
+    private void resetAttack() {
+        isAttack = false;
+        attackKeyPressed = 0;
+        body.getFixtureList().get(1).setFilterData(swordDestroyedFilter);
+        body.getFixtureList().get(2).setFilterData(swordDestroyedFilter);
     }
     private void handleInput(float delta) {
         float xSpeed = X_SPEED + X_SPEED * delta;
@@ -215,6 +212,10 @@ public abstract class Player extends Entity implements iPlayer {
                     currentAttackState = AttackState.JA;
                 else
                     currentAttackState = AttackState.A;
+                if(runningRight)
+                    body.getFixtureList().get(1).setFilterData(swordFilter);
+                else
+                    body.getFixtureList().get(2).setFilterData(swordFilter);
             }
         }
 
@@ -277,5 +278,39 @@ public abstract class Player extends Entity implements iPlayer {
         stateTimer = currentState == previousState ? stateTimer + delta : 0;
         previousState = currentState;
         return region;
+    }
+    protected void attackFixture() {
+        //making the slash for right side
+        PolygonShape shape = new PolygonShape();
+        shape.set(attackVertices(5,50,40,-30,15,-10));
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.isSensor = true;
+        fixtureDef.shape = shape;
+        body.createFixture(fixtureDef).setUserData("Sword");
+
+        swordDestroyedFilter = new Filter();
+        swordDestroyedFilter.categoryBits = SWORD_BIT;
+        swordDestroyedFilter.maskBits = DESTROYED_BIT;
+        body.getFixtureList().get(1).setFilterData(swordDestroyedFilter);
+
+        //making the slash for left side
+        shape.set(attackVertices(-5,-50,40,-30,15,-10));
+        body.createFixture(fixtureDef).setUserData("Sword");
+        body.getFixtureList().get(2).setFilterData(swordDestroyedFilter);
+
+        swordFilter = new Filter();
+        swordFilter.categoryBits = SWORD_BIT;
+        swordFilter.maskBits = second ? PLAYER_BIT : PLAYER2_BIT;
+
+        shape.dispose();
+    }
+    private Vector2[] attackVertices(float X1, float X2, float Y1, float Y2, float Y3, float Y4) {
+        Vector2[] vertices = new Vector2[4];
+        vertices[0] = new Vector2(X1, Y1).scl(1 / PPM);
+        vertices[1] = new Vector2(X1, Y2).scl(1 / PPM);
+        vertices[2] = new Vector2(X2, Y3).scl(1 / PPM);
+        vertices[3] = new Vector2(X2, Y4).scl(1 / PPM);
+        return vertices;
     }
 }

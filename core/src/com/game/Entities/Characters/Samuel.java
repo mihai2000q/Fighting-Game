@@ -15,7 +15,7 @@ public final class Samuel extends Player {
 
     public Samuel(World world, float X, float Y, boolean second) {
         super(world, X, Y, second);
-        X_SPEED = 2.3f;
+        X_SPEED = 1.5f;
         JUMP_SPEED = 7f;
         textureOffsetX = 0f;
         textureOffsetY = 0f;
@@ -46,5 +46,10 @@ public final class Samuel extends Player {
         attackingD = createAnimationFrame(atlas.findRegion("attack-B"),attackBFrames, textureWidth, textureHeight);
         attackingKick = null;
         attackingJump = createAnimationFrame(atlas.findRegion("attack-A"), attackJAFrames, textureWidth, textureHeight);
+    }
+
+    @Override
+    protected void attackFixture() {
+
     }
 }
