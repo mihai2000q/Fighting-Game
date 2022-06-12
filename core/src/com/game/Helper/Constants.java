@@ -10,7 +10,7 @@ public final class Constants {
     public static final String HerosPath = "Entities/Characters/Heros.txt";
     public static final String SamuelPath = "Entities/Characters/Samuel.txt";
 
-    public static final String MapPath = "Maps/forest_tileset_lite/Map.tmx";
+    public static final String StagePath = "Stages/deadpool_stage/deadpool.tmx";
 
     public static final short GROUND_BIT = 1;
     public static final short PLAYER_BIT = 2;

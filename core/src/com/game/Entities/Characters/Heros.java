@@ -18,7 +18,7 @@ public final class Heros extends Player {
         super(world, X, Y, second);
         X_SPEED = 1.8f;
         JUMP_SPEED = 5f;
-        textureOffsetX = 6f;
+        textureOffsetX = 6.5f;
         textureOffsetY = 25f;
         width = 10f;
         height = 30f;
@@ -38,7 +38,7 @@ public final class Heros extends Player {
         TextureAtlas atlas = new TextureAtlas(HerosPath);
         idle = createAnimationFrame(atlas.findRegion("idle"), 5, textureWidth, textureHeight);
         running = createAnimationFrame(atlas.findRegion("run"), 11, 0.1f, textureWidth, textureHeight);
-        jumping = createAnimationFrame(atlas.findRegion("jump"), 12, 0.06f, textureWidth, textureHeight);
+        jumping = createAnimationFrame(atlas.findRegion("jump"), 11, 0.06f, textureWidth, textureHeight);
         falling = createAnimationFrame(atlas.findRegion("fall"), 4, textureWidth, textureHeight);
         dead = createAnimationFrame(atlas.findRegion("dead"), 6, textureWidth, textureHeight);
         attackingA = createAnimationFrame(atlas.findRegion("attack-A"), attackAFrames, textureWidth, textureHeight);

@@ -1,14 +1,14 @@
 package com.game;
 
 import com.badlogic.gdx.Game;
-import com.game.Map.GameMap;
+import com.game.Map.GameStage;
 
 public final class FightingGame extends Game {
 
-	private GameMap gameMap;
+	private GameStage gameMap;
 	@Override
 	public void create() {
-		gameMap = new GameMap(); //has to be here and not in constructor because this method is run first
+		gameMap = new GameStage(); //has to be here and not in constructor because this method is run first
 		setScreen(gameMap);
 	}
 	@Override
