@@ -20,7 +20,6 @@ public abstract class Player extends Entity implements iPlayer {
     private State currentState;
     private State previousState;
 
-    protected String name;
     protected float textureOffsetX;
     protected float textureOffsetY;
     protected float width;
@@ -144,7 +143,8 @@ public abstract class Player extends Entity implements iPlayer {
     }
     @Override
     public final String toString(){
-        return name;
+        String[] strings = getClass().getName().split("\\.");
+        return strings[strings.length - 1];
     }
     private void attackingPattern() {
         if (isAttack) {

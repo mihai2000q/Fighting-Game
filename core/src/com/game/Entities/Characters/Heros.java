@@ -16,7 +16,6 @@ public final class Heros extends Player {
 
     public Heros(World world, float X, float Y, boolean second) {
         super(world, X, Y, second);
-        name = "Heros";
         x_speed = 1.25f;
         jump_speed = 5f;
         textureOffsetX = 6.5f;
