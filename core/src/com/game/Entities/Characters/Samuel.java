@@ -15,6 +15,7 @@ public final class Samuel extends Player {
 
     public Samuel(World world, float X, float Y, boolean second) {
         super(world, X, Y, second);
+        name = "Samuel";
         x_speed = 1.5f;
         jump_speed = 7f;
         textureOffsetX = 0f;

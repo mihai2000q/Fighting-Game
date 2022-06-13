@@ -16,6 +16,7 @@ public final class Heros extends Player {
 
     public Heros(World world, float X, float Y, boolean second) {
         super(world, X, Y, second);
+        name = "Heros";
         x_speed = 1.25f;
         jump_speed = 5f;
         textureOffsetX = 6.5f;
@@ -48,5 +49,13 @@ public final class Heros extends Player {
         attackingD = createAnimationFrame(atlas.findRegion("attack-C"), attackCFrames, textureWidth, textureHeight);
         attackingKick = createAnimationFrame(atlas.findRegion("attack-K"), attackKFrames, textureWidth, textureHeight);
         attackingJump = createAnimationFrame(atlas.findRegion("attack-JA"), attackJAFrames, textureWidth, textureHeight);
+    }
+    @Override
+    protected void attackFixture() {
+        super.attackFixture();
+        createAttackFixture("Attack-A",5,50,40,-30,15,-10);
+        createAttackFixture("Attack-B",5,50,20,-10,15,-10);
+        createAttackFixture("Attack-C",5,50,50,-30,15,-10);
+        createAttackFixture("Attack-K",5,50,10,-20,15,-10);
     }
 }

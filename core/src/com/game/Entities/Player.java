@@ -20,6 +20,7 @@ public abstract class Player extends Entity implements iPlayer {
     private State currentState;
     private State previousState;
 
+    protected String name;
     protected float textureOffsetX;
     protected float textureOffsetY;
     protected float width;
@@ -45,7 +46,7 @@ public abstract class Player extends Entity implements iPlayer {
     protected int attackKFrames;
     protected int attackJAFrames;
     private Filter swordFilter;
-    private Filter swordDestroyedFilter;
+    protected Filter swordDestroyedFilter;
     private boolean runningRight = false;
     private boolean isAttack = false;
     private boolean isDead = false;
@@ -54,6 +55,7 @@ public abstract class Player extends Entity implements iPlayer {
     private float stateTimer = 0f;
     private float attackTimer = 0f;
     private final boolean second;
+    private int numberOfFixtures;
 
     public Player(World world, float X, float Y, boolean second) {
         super(world, X, Y);
@@ -72,7 +74,9 @@ public abstract class Player extends Entity implements iPlayer {
         fixtureDef.friction = 0f;
         fixtureDef.restitution = 0f;
         fixtureDef.filter.categoryBits = second ? PLAYER2_BIT : PLAYER_BIT;
+        fixtureDef.filter.maskBits = (short) (GROUND_BIT | SWORD_BIT | (second ? PLAYER_BIT : PLAYER2_BIT));
         body.createFixture(fixtureDef).setUserData("Player");
+        numberOfFixtures++;
 
         body.setUserData(this);
         massData.mass = 1.5f;
@@ -138,6 +142,10 @@ public abstract class Player extends Entity implements iPlayer {
     public final void resetHit(){
         isHit = false;
     }
+    @Override
+    public final String toString(){
+        return name;
+    }
     private void attackingPattern() {
         if (isAttack) {
             switch (currentAttackState) {
@@ -150,6 +158,12 @@ public abstract class Player extends Entity implements iPlayer {
                             attackTimer = 0f;
                             stateTimer = 0f;
                             attackKeyPressed = 0;
+                            if(runningRight)
+                                body.getFixtureList().get(3).setFilterData(swordFilter);
+                            else
+                                body.getFixtureList().get(4).setFilterData(swordFilter);
+                            body.getFixtureList().get(1).setFilterData(swordDestroyedFilter);
+                            body.getFixtureList().get(2).setFilterData(swordDestroyedFilter);
                         }
                     }
                 }
@@ -161,6 +175,12 @@ public abstract class Player extends Entity implements iPlayer {
                             currentAttackState = AttackState.C;
                             attackTimer = 0f;
                             stateTimer = 0f;
+                            if(runningRight)
+                                body.getFixtureList().get(5).setFilterData(swordFilter);
+                            else
+                                body.getFixtureList().get(6).setFilterData(swordFilter);
+                            body.getFixtureList().get(3).setFilterData(swordDestroyedFilter);
+                            body.getFixtureList().get(4).setFilterData(swordDestroyedFilter);
                         }
                     }
                 }
@@ -173,8 +193,11 @@ public abstract class Player extends Entity implements iPlayer {
                         isAttack = false;
                 }
                 case K -> {
-                    if (attackTimer >= 0.1 * attackKFrames)
+                    if (attackTimer >= 0.1 * attackKFrames) {
                         isAttack = false;
+                        body.getFixtureList().get(7).setFilterData(swordDestroyedFilter);
+                        body.getFixtureList().get(8).setFilterData(swordDestroyedFilter);
+                    }
                 }
                 case JA -> {
                     if (attackTimer >= 0.1 * attackJAFrames)
@@ -186,8 +209,8 @@ public abstract class Player extends Entity implements iPlayer {
     private void resetAttack() {
         isAttack = false;
         attackKeyPressed = 0;
-        body.getFixtureList().get(1).setFilterData(swordDestroyedFilter);
-        body.getFixtureList().get(2).setFilterData(swordDestroyedFilter);
+        for (int i = 1; i < numberOfFixtures; i++)
+            body.getFixtureList().get(i).setFilterData(swordDestroyedFilter);
     }
     private void handleInput(float delta) {
         float xSpeed = x_speed + x_speed * delta;
@@ -237,8 +260,11 @@ public abstract class Player extends Entity implements iPlayer {
         if(currentState != State.ATTACKING) {
             if (input.isKeyJustPressed(attackHeavy))
                 currentAttackState = AttackState.D;
-            else if (input.isKeyJustPressed(attackKick) && attackKFrames != 0)
+            else if (input.isKeyJustPressed(attackKick) && attackKFrames != 0) {
                 currentAttackState = AttackState.K;
+                body.getFixtureList().get(7).setFilterData(swordFilter);
+                body.getFixtureList().get(8).setFilterData(swordFilter);
+            }
 
             if(input.isKeyJustPressed(attackHeavy)
                 || (input.isKeyJustPressed(attackKick) && attackKFrames != 0)) {
@@ -298,28 +324,29 @@ public abstract class Player extends Entity implements iPlayer {
         return region;
     }
     protected void attackFixture() {
-        //making the slash for right side
-        PolygonShape shape = new PolygonShape();
-        shape.set(attackVertices(5,50,40,-30,15,-10));
-
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.isSensor = true;
-        fixtureDef.shape = shape;
-        body.createFixture(fixtureDef).setUserData("Sword");
-
         swordDestroyedFilter = new Filter();
-        swordDestroyedFilter.categoryBits = SWORD_BIT;
+        swordDestroyedFilter.categoryBits = DESTROYED_BIT;
         swordDestroyedFilter.maskBits = DESTROYED_BIT;
-        body.getFixtureList().get(1).setFilterData(swordDestroyedFilter);
-
-        //making the slash for left side
-        shape.set(attackVertices(-5,-50,40,-30,15,-10));
-        body.createFixture(fixtureDef).setUserData("Sword");
-        body.getFixtureList().get(2).setFilterData(swordDestroyedFilter);
 
         swordFilter = new Filter();
         swordFilter.categoryBits = SWORD_BIT;
         swordFilter.maskBits = second ? PLAYER_BIT : PLAYER2_BIT;
+    }
+    protected final void createAttackFixture(String Name, float X1, float X2, float Y1, float Y2, float Y3, float Y4) {
+        PolygonShape shape = new PolygonShape();
+        //right side
+        shape.set(attackVertices(X1, X2, Y1, Y2, Y3, Y4));
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.isSensor = true;
+        fixtureDef.shape = shape;
+        body.createFixture(fixtureDef).setUserData(Name);
+        body.getFixtureList().get(numberOfFixtures++).setFilterData(swordDestroyedFilter);
+
+        //left side
+        shape.set(attackVertices(- X1, - X2, Y1, Y2, Y3, Y4));
+        body.createFixture(fixtureDef).setUserData(Name);
+        body.getFixtureList().get(numberOfFixtures++).setFilterData(swordDestroyedFilter);
 
         shape.dispose();
     }

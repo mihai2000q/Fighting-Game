@@ -42,7 +42,7 @@ public final class GameStage extends ScreenAdapter {
         viewport = new FitViewport(WORLD_WIDTH / PPM / viewportSize,
                 WORLD_HEIGHT / PPM / viewportSize, camera);
         world = new World(new Vector2(0, GRAVITY), true);
-        world.setContactListener(new WorldContactListener());
+        world.setContactListener(WorldContactListener.getInstance());
         debugRenderer = new Box2DDebugRenderer();
     }
     @Override

@@ -12,4 +12,5 @@ public interface iPlayer extends iEntity {
     void setDead();
     void setHit(float xSpeed, float ySpeed);
     void resetHit();
+    String toString();
 }
